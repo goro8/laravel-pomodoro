@@ -121,13 +121,168 @@
     </div>
 
     <script>
-        // ここに 2-5 のステップで
-        // ・25分タイマーのカウントダウン
-        // ・Start / Pause / Reset の動作
-        // ・localStorage への保存／読み込み
-        // を実装していく予定。
-        //
-        // 今は「HTMLと見た目のひな形だけ」のステップ（2-4）。
+        // ===== ここからポモドーロタイマー用のJavaScript =====
+
+        // 1ポモの時間（分）
+        const WORK_MINUTES = 25;
+        // 残り時間（秒）を管理する変数
+        const INITIAL_SECONDS = WORK_MINUTES * 60;
+        let remainingSeconds = INITIAL_SECONDS;
+
+        // setInterval のIDを保存しておく変数（動いているかどうかの判定にも使う）
+        let timerId = null;
+
+        // 画面上の要素を取得
+        const timerDisplay = document.getElementById('timer-display');
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const memoInput = document.getElementById('memo-input');
+        const pomodoroCountSpan = document.getElementById('pomodoro-count');
+
+        /**
+         * 今日の日付（YYYY-MM-DD 形式）を返す
+         * 例：2025-11-23
+         */
+        function getTodayKey() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // localStorage 用のキー（「日付ごと」にメモとポモ数を分ける）
+        const todayKey = getTodayKey();
+        const COUNT_KEY = `pomodoro_count_${todayKey}`;
+        const MEMO_KEY = `pomodoro_memo_${todayKey}`;
+
+        /**
+         * 残り秒数から、画面上の mm:ss 表示を更新する
+         */
+        function updateDisplay() {
+            const minutes = Math.floor(remainingSeconds / 60);
+            const seconds = remainingSeconds % 60;
+            const mm = String(minutes).padStart(2, '0');
+            const ss = String(seconds).padStart(2, '0');
+            timerDisplay.textContent = `${mm}:${ss}`;
+        }
+
+        /**
+         * localStorage から、今日のポモ数とメモを読み込んで画面に反映
+         */
+        function loadFromStorage() {
+            const savedCount = localStorage.getItem(COUNT_KEY);
+            if (savedCount !== null) {
+                pomodoroCountSpan.textContent = savedCount;
+            }
+
+            const savedMemo = localStorage.getItem(MEMO_KEY);
+            if (savedMemo !== null) {
+                memoInput.value = savedMemo;
+            }
+        }
+
+        /**
+         * 今日のポモ数を保存
+         */
+        function saveCount(count) {
+            localStorage.setItem(COUNT_KEY, String(count));
+        }
+
+        /**
+         * メモを保存
+         */
+        function saveMemo(value) {
+            localStorage.setItem(MEMO_KEY, value);
+        }
+
+        /**
+         * タイマーをスタート（すでに動いていれば何もしない）
+         */
+        function startTimer() {
+            // すでに setInterval が動いている場合は二重起動を防ぐ
+            if (timerId !== null) {
+                return;
+            }
+
+            timerId = setInterval(() => {
+                remainingSeconds--;
+
+                // 0秒以下にならないようにする
+                if (remainingSeconds <= 0) {
+                    remainingSeconds = 0;
+                    updateDisplay();
+
+                    // タイマー停止
+                    clearInterval(timerId);
+                    timerId = null;
+
+                    // 1ポモ完了 → 今日のポモ数を +1
+                    let currentCount = parseInt(pomodoroCountSpan.textContent, 10) || 0;
+                    currentCount++;
+                    pomodoroCountSpan.textContent = currentCount;
+                    saveCount(currentCount);
+
+                    // 簡易な完了通知
+                    alert('1ポモ完了！おつかれさまです 🎉');
+
+                    return;
+                }
+
+                // 1秒進むごとに表示を更新
+                updateDisplay();
+            }, 1000); // 1000ミリ秒ごと（＝1秒ごと）
+        }
+
+        /**
+         * タイマーを一時停止
+         */
+        function pauseTimer() {
+            if (timerId !== null) {
+                clearInterval(timerId);
+                timerId = null;
+            }
+        }
+
+        /**
+         * タイマーをリセット（25:00 に戻す）
+         */
+        function resetTimer() {
+            // 動いていれば止める
+            pauseTimer();
+            // 残り時間を初期値に戻す
+            remainingSeconds = INITIAL_SECONDS;
+            // 画面表示もリセット
+            updateDisplay();
+        }
+
+        /**
+         * イベントリスナーの登録
+         * ボタン操作やメモ入力と、JavaScriptの処理をひも付ける
+         */
+        function setupEventListeners() {
+            startBtn.addEventListener('click', startTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            resetBtn.addEventListener('click', resetTimer);
+
+            // メモ欄は入力されるたびに保存（input イベント）
+            memoInput.addEventListener('input', (event) => {
+                saveMemo(event.target.value);
+            });
+        }
+
+        // ページ読み込み時に一度だけ実行する初期化処理
+        function init() {
+            updateDisplay();    // まず 25:00 を表示
+            loadFromStorage();  // もし保存済みのメモ・ポモ数があれば復元
+            setupEventListeners(); // ボタンやメモと処理をひも付け
+        }
+
+        // ページが読み込まれたタイミングで init() を実行
+        init();
+
+        // ===== ここまでポモドーロタイマー用のJavaScript =====
     </script>
 </body>
 </html>
