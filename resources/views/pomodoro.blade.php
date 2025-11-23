@@ -59,6 +59,27 @@
             font-size: 14px;
         }
 
+        /* 各ボタンの色分け（世界一シンプル＋少しだけ気分が上がる程度） */
+        #start-btn {
+            background: #22c55e;   /* ちょい明るめの緑 */
+            color: #ffffff;
+        }
+
+        #pause-btn {
+            background: #e5e7eb;   /* うすいグレー */
+            color: #111827;
+        }
+
+        #reset-btn {
+            background: #fee2e2;   /* うすい赤（リセットっぽさ） */
+            color: #991b1b;
+        }
+
+        /* ホバー時に少しだけ濃くする */
+        .button-group button:hover {
+            filter: brightness(0.95);
+        }
+
         /* メモ入力欄 */
         .memo-area {
             margin-bottom: 16px;
