@@ -11,18 +11,6 @@ Laravel Pomodoro Timer
 
 > ※ ドメインはテスト用のため、将来的に構成や URL を変更・クローズする可能性があります。
 
-本番 URL（ポモドーロ）:
-<a href="https://travel-manager.xvps.jp/pomodoro" target="_blank" rel="noopener noreferrer">
-  https://travel-manager.xvps.jp/pomodoro
-</a>  
-
-本番 URL（旅行管理アプリ / FastAPI）:
-<a href="https://travel-manager.xvps.jp/" target="_blank" rel="noopener noreferrer">
-  https://travel-manager.xvps.jp/
-</a>
-
-> ※ ドメインはテスト用のため、将来的に構成や URL を変更・クローズする可能性があります。
-
 ---
 
 ## プロジェクト概要
