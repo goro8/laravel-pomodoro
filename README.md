@@ -9,7 +9,7 @@
 * 本番 URL（ポモドーロ）: `https://travel-manager.xvps.jp/pomodoro`
 * 本番 URL（旅行管理アプリ / FastAPI）: `https://travel-manager.xvps.jp/`
 
-> ※ ドメインはポートフォリオ用のため、将来構成や URL を変更・クローズする可能性があります。
+> ※ ドメインはテスト用のため、将来的に構成や URL を変更・クローズする可能性があります。
 
 ---
 
