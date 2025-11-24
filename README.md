@@ -1,12 +1,13 @@
 # Laravel Pomodoro Timer
 
-シンプルなポモドーロタイマーを **Laravel** で実装した個人開発プロジェクトです。
+シンプルなポモドーロタイマーを **Laravel** で実装した個人開発プロジェクトです。  
 「まずは最小限の機能でいいから、本番環境に載せて動かす（MVP）」をテーマにしています。
 
-既に同じ VPS 上で運用している **FastAPI 製の旅行管理アプリ** と同じドメインに、
-この Laravel アプリを **サブパス `/pomodoro` として共存** させています。
+普段から「ユーザーの課題解決 × 実務に活かすこと」を意識して個人開発をしています。  
+今回もその一環として、既に同じ VPS 上で運用している **FastAPI 製の旅行管理アプリ** を止めることなく、  
+同じドメインにこの Laravel アプリを **サブパス `/pomodoro` として共存** させる構成を選びました。
 
-* 本番 URL（ポモドーロ）: `https://travel-manager.xvps.jp/pomodoro`
+* 本番 URL（ポモドーロ）: `https://travel-manager.xvps.jp/pomodoro`  
 * 本番 URL（旅行管理アプリ / FastAPI）: `https://travel-manager.xvps.jp/`
 
 > ※ ドメインはテスト用のため、将来的に構成や URL を変更・クローズする可能性があります。
